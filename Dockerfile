@@ -29,7 +29,7 @@ RUN composer global install \
     && ln -s ~/.composer/vendor/squizlabs/php_codesniffer/bin/phpcbf /usr/local/bin/phpcbf
 
 #####################################
-# Node / NVM:
+# Node / NVM / Commitizen:
 #####################################
 
 # Check if NVM needs to be installed
@@ -45,7 +45,9 @@ RUN if [ ${INSTALL_NODE} = true ]; then \
     nvm install ${NODE_VERSION} && \
     nvm use ${NODE_VERSION} && \
     nvm alias ${NODE_VERSION} && \
-    npm install -g gulp bower vue-cli \
+    npm config set user 0 && \
+    npm config set unsafe-perm true && \
+    npm install -g gulp bower vue-cli commitizen cz-conventional-changelog standard-version \
     ;fi
 
 # Wouldn't execute when added to the RUN statement in the above block
@@ -99,7 +101,7 @@ RUN if [ ${INSTALL_YARN} = true ]; then \
 # Clean up
 USER root
 RUN apt-get clean && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* /var/cache/apk/* \
     npm config set python /usr/bin/python2.7
 
 # Set default work directory
