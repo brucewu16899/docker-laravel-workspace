@@ -35,7 +35,7 @@ RUN composer global install \
 # Check if NVM needs to be installed
 ARG NODE_VERSION=stable
 ENV NODE_VERSION ${NODE_VERSION}
-ARG INSTALL_NODE=false
+ARG INSTALL_NODE=true
 ENV INSTALL_NODE ${INSTALL_NODE}
 ENV NVM_DIR /root/.nvm
 RUN if [ ${INSTALL_NODE} = true ]; then \
@@ -76,7 +76,7 @@ ENV PATH $PATH:$NVM_DIR/versions/node/v${NODE_VERSION}/bin
 
 USER root
 
-ARG INSTALL_YARN=false
+ARG INSTALL_YARN=true
 ENV INSTALL_YARN ${INSTALL_YARN}
 ARG YARN_VERSION=latest
 ENV YARN_VERSION ${YARN_VERSION}
