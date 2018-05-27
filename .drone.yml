@@ -1,0 +1,23 @@
+pipeline:
+    build:
+        image: plugins/docker
+        repo: hchstera/laravel-workspace
+        secrets: [ docker_username, docker_password ]
+        tags: latest
+        when:
+            event: [ push ]
+            branch: [ master ]
+
+    notify_line:
+        image: appleboy/drone-line
+        secrets: [ plugin_channel_secret, plugin_channel_token, plugin_to_group ]
+        when:
+            status: [ success, failure ]
+        event: [ push ]
+        message: |
+            {{#success build.status}}
+                {{build.author}} trigger build #{{build.number}}
+                {{repo.name}} by {{build.event}} to branch {{build.branch}} succeeded.
+            {{else}}
+                build {{ build.number }} failed. Fix me please.
+            {{/success}}
